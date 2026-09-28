@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Zoo Day Route Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#F3F6F1; --surface:#FFFFFF; --ink:#1B2620; --muted:#5B6B61; --line:#D9E2DB;
+  --green:#2F6B4F; --am:#D9530B; --pm:#6F42C1; --gate:#2A2F2C; --chip:#E8F0EA; --star:#8A5A00; --starbg:#FFF2D6;
+  --focus:#1F7AE0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#111713; --surface:#1A231D; --ink:#E4ECE6; --muted:#9DB0A4; --line:#2C3A31;
+    --green:#7CC39F; --am:#FF8A4C; --pm:#B08CFF; --gate:#D0D7D2; --chip:#233028; --star:#FFD27A; --starbg:#3A2F16;
+    --focus:#6BB0FF;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111713; --surface:#1A231D; --ink:#E4ECE6; --muted:#9DB0A4; --line:#2C3A31;
+  --green:#7CC39F; --am:#FF8A4C; --pm:#B08CFF; --gate:#D0D7D2; --chip:#233028; --star:#FFD27A; --starbg:#3A2F16;
+  --focus:#6BB0FF;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 "Atkinson Hyperlegible",system-ui,-apple-system,sans-serif;padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1100px;margin:0 auto;display:grid;gap:20px}
+h1,h2{font-family:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,42px);font-weight:800;letter-spacing:-.01em;line-height:1.05}
+h2{font-size:20px;font-weight:600}
+.sub{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pill{background:var(--chip);border-radius:999px;padding:4px 12px;font-size:14px;font-variant-numeric:tabular-nums}
+.pill b{font-weight:700}
+
+.mapcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.maphead{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:26px;height:5px;border-radius:3px;display:inline-block}
+.sw.dash{background:repeating-linear-gradient(90deg,var(--pm) 0 7px,transparent 7px 11px)}
+.hint{font-size:13px;color:var(--muted)}
+.scroller{overflow:auto;-webkit-overflow-scrolling:touch;max-height:78vh}
+.map{position:relative;width:100%;min-width:900px;aspect-ratio:1985/1179;background:#cfe3d3}
+.map img{position:absolute;inset:0;width:100%;height:100%;display:block;max-width:none}
+.pin{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;border:3px solid #fff;color:#fff;font:700 15px/1 "Atkinson Hyperlegible",system-ui,sans-serif;display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.35);transition:transform .15s ease}
+.pin.am{background:#D9530B}.pin.pm{background:#6F42C1}.pin.gate{background:#2A2F2C}
+.pin.done{opacity:.45}
+.pin:hover{transform:translate(-50%,-50%) scale(1.12)}
+.pin.active{transform:translate(-50%,-50%) scale(1.3);box-shadow:0 0 0 4px rgba(255,255,255,.9),0 0 0 7px #1F7AE0;z-index:2}
+.pin:focus-visible,.stop:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+.cols{display:grid;grid-template-columns:1fr;gap:20px}
+@media (min-width:900px){.cols{grid-template-columns:1.6fr 1fr;align-items:start}}
+.list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.stop{display:grid;grid-template-columns:44px 1fr;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;scroll-margin-top:16px}
+.stop.active{border-color:var(--focus);box-shadow:0 0 0 2px var(--focus)}
+.stop.done .body{opacity:.55}
+.num{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;margin-top:2px}
+.num.am{background:#D9530B}.num.pm{background:#6F42C1}.num.gate{background:#2A2F2C}
+.top{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--green)}
+.name{font-weight:700;font-size:17px}
+.tag{font-size:12px;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:2px 7px;background:var(--chip);color:var(--muted)}
+.tag.star{background:var(--starbg);color:var(--star)}
+.tag.opt{border:1px dashed var(--muted);background:none}
+.note{margin:4px 0 0;color:var(--ink)}
+.tip{margin:4px 0 0;color:var(--muted);font-size:14px}
+.actions{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;font-size:14px}
+.actions a{color:var(--green);font-weight:700}
+.check{display:inline-flex;align-items:center;gap:6px;color:var(--muted);cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--green)}
+
+.side{display:grid;gap:14px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.panel ul{margin:8px 0 0;padding-left:18px;display:grid;gap:6px}
+.panel p{margin:8px 0 0}
+.small{font-size:14px;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:var(--surface);border:0;border-radius:8px;padding:8px 12px;font:700 14px "Atkinson Hyperlegible",system-ui,sans-serif;text-decoration:none;cursor:pointer}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.ghost{background:none;color:var(--green);border:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Bronx Zoo route, Saturday Oct 3</h1>
+    <p class="sub">One loop from the Southern Boulevard gate: big animals in the morning, picnic and monorail at midday, a stroller-nap stroll past the tigers, then Boo at the Zoo fun on the way out. Tap any pin or stop.</p>
+    <div class="meta">
+      <span class="pill"><b>Open</b> 10:00 to 5:30 (exhibits close 5:00)</span>
+      <span class="pill"><b>Park</b> Southern Blvd lot, $22</span>
+      <span class="pill"><b>Group</b> 10 adults, 3 toddlers</span>
+    </div>
+  </header>
+
+  <section class="mapcard" aria-label="Route on the zoo map">
+    <div class="maphead">
+      <div class="legend">
+        <span><i class="sw" style="background:var(--am)"></i>Morning</span>
+        <span><i class="sw" style="background:var(--pm)"></i>Nap + afternoon</span>
+        <span><i class="sw dash"></i>Optional</span>
+      </div>
+      <span class="hint" id="hint">Drag to pan the map</span>
+    </div>
+    <div class="scroller" id="scroller">
+      <div class="map" id="map">
+        <img src="route-map.jpg" alt="Bronx Zoo map with the day's route drawn in orange and purple">
+      </div>
+    </div>
+  </section>
+
+  <div class="cols">
+    <section aria-label="Stops">
+      <h2 style="margin-bottom:10px">Stops in order</h2>
+      <ol class="list" id="list"></ol>
+    </section>
+    <aside class="side">
+      <div class="panel">
+        <h2>Getting there</h2>
+        <p>Aim to park by 9:30. Weekend lots can fill.</p>
+        <div class="btnrow">
+          <a class="btn" href="https://www.google.com/maps/dir/?api=1&amp;destination=2300+Southern+Boulevard,+Bronx,+NY+10460" target="_blank" rel="noopener">Directions to Southern Blvd lot</a>
+          <a class="btn ghost" href="https://map.bronxzoo.com/place-types/15-parking-lots" target="_blank" rel="noopener">Live lot status</a>
+        </div>
+        <p class="small">Backup: Fountain Circle via the Fordham Road gate ($30, weekends).</p>
+      </div>
+      <div class="panel">
+        <h2>Star Attractions</h2>
+        <p class="small">Free with a "Bronx Zoo Admission" ticket, $7 per person each with "Limited Admission." Under 3 is free.</p>
+        <ul>
+          <li>On the route: gorillas, monorail, Children's Zoo</li>
+          <li>Nearby if wanted: JungleWorld, Butterfly Garden, Bug Carousel, Zoo Shuttle</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h2>Boo at the Zoo on the route</h2>
+        <ul>
+          <li>Crafts and puppet show (11:30) at Giraffe Corner</li>
+          <li>Candy trail on the Rhino Trail, 11 to 2</li>
+          <li>Costume parade 3:15, dance party 3:30 at Astor Court</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h2>If the group splits</h2>
+        <p>Meet at the Astor Court sea lion pool. Early exits head north to Gate C.</p>
+        <div class="btnrow"><button class="btn ghost" id="reset" type="button">Clear checkmarks</button></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+const STOPS = [
+  {n:1,x:54.66,y:11.2,k:"gate",time:"9:30",name:"Gate C and parking",tag:"Start and finish",note:"Park in the Southern Boulevard lot and be at the gate before the 10:00 opening. Back here around 4:50.",tip:"Bring your own strollers; rentals are $14.70 single.",q:"Bronx Zoo Southern Boulevard Gate"},
+  {n:2,x:30.98,y:17.98,k:"am",time:"10:00",name:"Congo Gorilla Forest",star:true,note:"Gorillas, mandrills and okapi. Go first, before the lines build.",tip:"Strollers must be parked outside; carry the kids in. About 45 minutes.",q:"Congo Gorilla Forest Bronx Zoo"},
+  {n:3,x:22.77,y:36.3,k:"am",time:"10:50",name:"Carter Giraffe Building",note:"Giraffes up close, indoors and out. Giraffe Corner has Halloween crafts from 11.",tip:"About 20 minutes. Warm spot if it's chilly.",q:"Carter Giraffe Building Bronx Zoo"},
+  {n:4,x:29.22,y:47.5,k:"am",time:"11:15",name:"African Plains",note:"Lions, zebras and gazelles across open savanna.",tip:"Restrooms at Somba Village right here. About 25 minutes.",q:"African Plains Bronx Zoo"},
+  {n:5,x:32.24,y:59.8,k:"am",time:"11:40",name:"Himalayan Highlands",note:"Snow leopards and red pandas.",tip:"About 20 minutes, then 10 minutes to lunch.",q:"Himalayan Highlands Bronx Zoo"},
+  {n:6,x:14.36,y:65.48,k:"am",time:"12:10",name:"Picnic lunch at Asia Plaza",note:"Picnic tables and restrooms nearby. Toddler lunch around 12 to 12:30.",tip:"About 40 minutes.",q:"Asia Plaza Bronx Zoo"},
+  {n:7,x:20.15,y:76.51,k:"am",time:"12:50",name:"Wild Asia Monorail",star:true,note:"The only way to see Patty, the zoo's last elephant, plus rhinos and deer. She may be moved to a sanctuary, so no guarantee.",tip:"Park strollers; kids ride on laps. About 25 minutes.",q:"Wild Asia Monorail Bronx Zoo"},
+  {n:8,x:57.93,y:51.91,k:"pm",time:"1:50",name:"Tiger Mountain",note:"Nap stroll from Asia Plaza past the Bears, about 15 minutes. Glass viewing right up against the tigers.",tip:"Kaia naps 1:30 to 3:30 in the stroller. Take turns if kids are asleep.",q:"Tiger Mountain Bronx Zoo"},
+  {n:9,x:69.42,y:58.52,k:"pm",time:"2:20",name:"World of Birds",opt:true,note:"Quiet indoor stop next to Tiger Mountain, or a bench break instead.",tip:"Skip if kids are fading; head straight to Astor Court.",q:"World of Birds Bronx Zoo"},
+  {n:10,x:69.62,y:34.1,k:"pm",time:"3:00",name:"Astor Court",note:"Sea lion pool plus Boo at the Zoo: costume parade 3:15, dance party with bubbles 3:30.",tip:"Group meeting point if anyone splits off.",q:"Astor Court Bronx Zoo"},
+  {n:11,x:68.26,y:27.31,k:"pm",time:"3:45",name:"Madagascar!",note:"Lemurs, including babies, and Nile crocodiles.",tip:"About 25 minutes.",q:"Madagascar exhibit Bronx Zoo"},
+  {n:12,x:59.85,y:17.98,k:"pm",time:"4:15",name:"Children's Zoo",star:true,note:"Toddler-height animals to end the day, a short walk from Gate C.",tip:"Exhibits close at 5:00. Exit by 4:50.",q:"Children's Zoo Bronx Zoo"}
+];
+
+const map = document.getElementById('map');
+const list = document.getElementById('list');
+const scroller = document.getElementById('scroller');
+let done = {};
+try { done = JSON.parse(localStorage.getItem('zooDone') || '{}') || {}; } catch (e) { done = {}; }
+function save(){ try { localStorage.setItem('zooDone', JSON.stringify(done)); } catch (e) {} }
+
+STOPS.forEach(s => {
+  const pin = document.createElement('button');
+  pin.type = 'button';
+  pin.className = 'pin ' + s.k;
+  pin.style.left = s.x + '%';
+  pin.style.top = s.y + '%';
+  pin.textContent = s.n;
+  pin.id = 'pin' + s.n;
+  pin.setAttribute('aria-label', 'Stop ' + s.n + ', ' + s.name + ', ' + s.time);
+  pin.addEventListener('click', () => select(s.n, 'card'));
+  map.appendChild(pin);
+
+  const li = document.createElement('li');
+  li.className = 'stop';
+  li.id = 'stop' + s.n;
+  li.tabIndex = 0;
+  const tags = [];
+  if (s.star) tags.push('<span class="tag star">Star Attraction</span>');
+  if (s.opt) tags.push('<span class="tag opt">Optional</span>');
+  if (s.tag) tags.push('<span class="tag">' + s.tag + '</span>');
+  li.innerHTML =
+    '<div class="num ' + s.k + '">' + s.n + '</div>' +
+    '<div class="body"><div class="top"><span class="time">' + s.time + '</span><span class="name">' + s.name + '</span>' + tags.join('') + '</div>' +
+    '<p class="note">' + s.note + '</p><p class="tip">' + s.tip + '</p>' +
+    '<div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(s.q) + '" target="_blank" rel="noopener">Open in Google Maps</a>' +
+    '<label class="check"><input type="checkbox" id="done' + s.n + '"> Done</label></div></div>';
+  li.addEventListener('click', e => { if (e.target.closest('a,label,input')) return; select(s.n, 'map'); });
+  li.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(s.n, 'map'); } });
+  list.appendChild(li);
+
+  const cb = li.querySelector('input');
+  cb.checked = !!done[s.n];
+  paintDone(s.n);
+  cb.addEventListener('change', () => { done[s.n] = cb.checked; if (!cb.checked) delete done[s.n]; save(); paintDone(s.n); });
+});
+
+function paintDone(n){
+  document.getElementById('pin' + n).classList.toggle('done', !!done[n]);
+  document.getElementById('stop' + n).classList.toggle('done', !!done[n]);
+}
+
+function select(n, scrollTo){
+  document.querySelectorAll('.pin.active,.stop.active').forEach(el => el.classList.remove('active'));
+  const pin = document.getElementById('pin' + n), card = document.getElementById('stop' + n);
+  pin.classList.add('active'); card.classList.add('active');
+  const smooth = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  if (scrollTo === 'card') card.scrollIntoView({behavior: smooth, block: 'nearest'});
+  if (scrollTo === 'map') {
+    const s = STOPS[n - 1];
+    scroller.scrollTo({left: map.clientWidth * s.x / 100 - scroller.clientWidth / 2, top: map.clientHeight * s.y / 100 - scroller.clientHeight / 2, behavior: smooth});
+    scroller.scrollIntoView({behavior: smooth, block: 'nearest'});
+  }
+}
+
+document.getElementById('reset').addEventListener('click', () => {
+  done = {}; save(); STOPS.forEach(s => { document.getElementById('done' + s.n).checked = false; paintDone(s.n); });
+});
+
+// Hide the pan hint when the whole map fits
+function fitHint(){ document.getElementById('hint').hidden = scroller.scrollWidth <= scroller.clientWidth + 2; }
+window.addEventListener('resize', fitHint); fitHint();
+// Start phones on the morning half of the map
+if (scroller.scrollWidth > scroller.clientWidth + 2) scroller.scrollLeft = map.clientWidth * 0.08;
+</script>
+</body>
+</html>
