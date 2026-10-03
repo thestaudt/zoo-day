@@ -50,7 +50,7 @@ h2{font-size:20px;font-weight:600}
 .map{position:relative;width:100%;min-width:900px;aspect-ratio:1985/1179;background:#cfe3d3}
 .map img{position:absolute;inset:0;width:100%;height:100%;display:block;max-width:none}
 .pin{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;border:3px solid #fff;color:#fff;font:700 15px/1 "Atkinson Hyperlegible",system-ui,sans-serif;display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.35);transition:transform .15s ease}
-.pin.am{background:#D9530B}.pin.pm{background:#6F42C1}.pin.gate{background:#2A2F2C}
+.pin.am{background:#D9530B}.pin.pm,.pin.lunch{background:#6F42C1}.pin.bird{background:#0D809A}.pin.gate{background:#2A2F2C}
 .pin.done{opacity:.45}
 .pin:hover{transform:translate(-50%,-50%) scale(1.12)}
 .pin.active{transform:translate(-50%,-50%) scale(1.3);box-shadow:0 0 0 4px rgba(255,255,255,.9),0 0 0 7px #1F7AE0;z-index:2}
@@ -63,13 +63,14 @@ h2{font-size:20px;font-weight:600}
 .stop.active{border-color:var(--focus);box-shadow:0 0 0 2px var(--focus)}
 .stop.done .body{opacity:.55}
 .num{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;margin-top:2px}
-.num.am{background:#D9530B}.num.pm{background:#6F42C1}.num.gate{background:#2A2F2C}
+.num.am{background:#D9530B}.num.pm,.num.lunch{background:#6F42C1}.num.bird{background:#0D809A}.num.gate{background:#2A2F2C}
 .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
 .time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--green)}
 .name{font-weight:700;font-size:17px}
 .tag{font-size:12px;letter-spacing:.04em;text-transform:uppercase;border-radius:6px;padding:2px 7px;background:var(--chip);color:var(--muted)}
 .tag.star{background:var(--starbg);color:var(--star)}
 .tag.opt{border:1px dashed var(--muted);background:none}
+.tag.bird{background:#DDF1F5;color:#0B6477}
 .note{margin:4px 0 0;color:var(--ink)}
 .tip{margin:4px 0 0;color:var(--muted);font-size:14px}
 .actions{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;font-size:14px}
@@ -93,9 +94,9 @@ h2{font-size:20px;font-weight:600}
 <div class="wrap">
   <header>
     <h1>Bronx Zoo route, Saturday Oct 3</h1>
-    <p class="sub">One loop from the Southern Boulevard gate: big animals in the morning, picnic and monorail at midday, a stroller-nap stroll past the tigers, then Boo at the Zoo fun on the way out. Tap any pin or stop.</p>
+    <p class="sub">Birds for Kaia first while she's fresh, then gorillas, giraffes and lions, a picnic at Asia Plaza, the Wild Asia Monorail, and tigers on the nap walk back to the gate. Tap any pin or stop.</p>
     <div class="meta">
-      <span class="pill"><b>Open</b> 10:00 to 5:30 (exhibits close 5:00)</span>
+      <span class="pill"><b>Our visit</b> 10:00 to about 2:25</span>
       <span class="pill"><b>Park</b> Southern Blvd lot, $22</span>
       <span class="pill"><b>Group</b> 10 adults, 3 toddlers</span>
     </div>
@@ -104,15 +105,15 @@ h2{font-size:20px;font-weight:600}
   <section class="mapcard" aria-label="Route on the zoo map">
     <div class="maphead">
       <div class="legend">
-        <span><i class="sw" style="background:var(--am)"></i>Morning</span>
-        <span><i class="sw" style="background:var(--pm)"></i>Nap + afternoon</span>
-        <span><i class="sw dash"></i>Optional</span>
+        <span><i class="sw" style="background:#0D809A"></i>Birds for Kaia</span>
+        <span><i class="sw" style="background:#D9530B"></i>Big animals</span>
+        <span><i class="sw" style="background:#5A5A5A"></i>Nap walk out</span>
       </div>
       <span class="hint" id="hint">Drag to pan the map</span>
     </div>
     <div class="scroller" id="scroller">
       <div class="map" id="map">
-        <img src="route-map.jpg" alt="Bronx Zoo map with the day's route drawn in orange and purple">
+        <img src="route-map.jpg" alt="Bronx Zoo map with the day's route drawn in teal, orange and gray">
       </div>
     </div>
   </section>
@@ -136,21 +137,34 @@ h2{font-size:20px;font-weight:600}
         <h2>Star Attractions</h2>
         <p class="small">Free with a "Bronx Zoo Admission" ticket, $7 per person each with "Limited Admission." Under 3 is free.</p>
         <ul>
-          <li>On the route: gorillas, monorail, Children's Zoo</li>
-          <li>Nearby if wanted: JungleWorld, Butterfly Garden, Bug Carousel, Zoo Shuttle</li>
+          <li>On the route: Congo Gorilla Forest and the Wild Asia Monorail</li>
+          <li>Budgie Landing (feed budgies from a seed stick) is extra with every ticket: $5 per person, April to October, go before 3pm</li>
         </ul>
       </div>
       <div class="panel">
-        <h2>Boo at the Zoo on the route</h2>
+        <h2>If you need to cut it short</h2>
         <ul>
-          <li>Crafts and puppet show (11:30) at Giraffe Corner</li>
-          <li>Candy trail on the Rhino Trail, 11 to 2</li>
-          <li>Costume parade 3:15, dance party 3:30 at Astor Court</li>
+          <li>Out of steam after the monorail? Take the Zoo Shuttle from Asia Plaza back to Southern Blvd (Star Attraction) and skip the tigers. Out by about 2:00.</li>
+          <li>Long gorilla line (lines close past a 30-minute wait)? Go on to the giraffes and lions; the monorail covers more big animals.</li>
+          <li>Extra energy: Budgie Landing near Mouse House, $5 per person, feed budgies from a seed stick.</li>
+        </ul>
+        <p class="small">Not on this route: Himalayan Highlands, Madagascar!, Children's Zoo, World of Birds.</p>
+      </div>
+      <div class="panel">
+        <h2>Boo at the Zoo today</h2>
+        <p class="small">Free with admission, 11:00 to 4:00 unless noted. Check bronxzoo.com/today for changes.</p>
+        <ul>
+          <li><b>Astor Court</b> (on our walk out, ~2:05): costume parade 12, 1, <b>2:00</b>, 3:15; dance party with bubbles 15 min after each. Carnival games, lawn games, mural. Face painting ages 3+.</li>
+          <li><b>Giraffe Corner</b> (we pass ~11:40): Halloween crafts, mystery touch wall. Puppet show 11:30, 12:30, 2:30, 3:30.</li>
+          <li><b>Grizzly Corner</b>, near the Bears: magic show 11, 12, 2, 3, 4; spooky stories 11:30, 12:30, 2:30, 3:30.</li>
+          <li><b>Candy Trail</b>, Rhino Trail, 11 to 2. Kids only, one turn per family.</li>
+          <li>Pumpkin Garden (Rhino Garden), carving demos at Dancing Crane (speed carving 11:30, 2:30), hay maze on the Butterfly Patio.</li>
+          <li>Keeper chats: Tigers 10:30, Reptiles 11, Bears 1, Birds of Prey 2.</li>
         </ul>
       </div>
       <div class="panel">
         <h2>If the group splits</h2>
-        <p>Meet at the Astor Court sea lion pool. Early exits head north to Gate C.</p>
+        <p>Meet at the Astor Court sea lion pool. Early exits head north to Gate C, 10 to 15 minutes from most stops.</p>
         <div class="btnrow"><button class="btn ghost" id="reset" type="button">Clear checkmarks</button></div>
       </div>
     </aside>
@@ -159,26 +173,23 @@ h2{font-size:20px;font-weight:600}
 
 <script>
 const STOPS = [
-  {n:1,x:54.66,y:11.2,k:"gate",time:"9:30",name:"Gate C and parking",tag:"Start and finish",note:"Park in the Southern Boulevard lot and be at the gate before the 10:00 opening. Back here around 4:50.",tip:"Bring your own strollers; rentals are $14.70 single.",q:"Bronx Zoo Southern Boulevard Gate"},
-  {n:2,x:30.98,y:17.98,k:"am",time:"10:00",name:"Congo Gorilla Forest",star:true,note:"Gorillas, mandrills and okapi. Go first, before the lines build.",tip:"Strollers must be parked outside; carry the kids in. About 45 minutes.",q:"Congo Gorilla Forest Bronx Zoo"},
-  {n:3,x:22.77,y:36.3,k:"am",time:"10:50",name:"Carter Giraffe Building",note:"Giraffes up close, indoors and out. Giraffe Corner has Halloween crafts from 11.",tip:"About 20 minutes. Warm spot if it's chilly.",q:"Carter Giraffe Building Bronx Zoo"},
-  {n:4,x:29.22,y:47.5,k:"am",time:"11:15",name:"African Plains",note:"Lions, zebras and gazelles across open savanna.",tip:"Restrooms at Somba Village right here. About 25 minutes.",q:"African Plains Bronx Zoo"},
-  {n:5,x:32.24,y:59.8,k:"am",time:"11:40",name:"Himalayan Highlands",note:"Snow leopards and red pandas.",tip:"About 20 minutes, then 10 minutes to lunch.",q:"Himalayan Highlands Bronx Zoo"},
-  {n:6,x:14.36,y:65.48,k:"am",time:"12:10",name:"Picnic lunch at Asia Plaza",note:"Picnic tables and restrooms nearby. Toddler lunch around 12 to 12:30.",tip:"About 40 minutes.",q:"Asia Plaza Bronx Zoo"},
-  {n:7,x:20.15,y:76.51,k:"am",time:"12:50",name:"Wild Asia Monorail",star:true,note:"The only way to see Patty, the zoo's last elephant, plus rhinos and deer. She may be moved to a sanctuary, so no guarantee.",tip:"Park strollers; kids ride on laps. About 25 minutes.",q:"Wild Asia Monorail Bronx Zoo"},
-  {n:8,x:57.93,y:51.91,k:"pm",time:"1:50",name:"Tiger Mountain",note:"Nap stroll from Asia Plaza past the Bears, about 15 minutes. Glass viewing right up against the tigers.",tip:"Kaia naps 1:30 to 3:30 in the stroller. Take turns if kids are asleep.",q:"Tiger Mountain Bronx Zoo"},
-  {n:9,x:69.42,y:58.52,k:"pm",time:"2:20",name:"World of Birds",opt:true,note:"Quiet indoor stop next to Tiger Mountain, or a bench break instead.",tip:"Skip if kids are fading; head straight to Astor Court.",q:"World of Birds Bronx Zoo"},
-  {n:10,x:69.62,y:34.1,k:"pm",time:"3:00",name:"Astor Court",note:"Sea lion pool plus Boo at the Zoo: costume parade 3:15, dance party with bubbles 3:30.",tip:"Group meeting point if anyone splits off.",q:"Astor Court Bronx Zoo"},
-  {n:11,x:68.26,y:27.31,k:"pm",time:"3:45",name:"Madagascar!",note:"Lemurs, including babies, and Nile crocodiles.",tip:"About 25 minutes.",q:"Madagascar exhibit Bronx Zoo"},
-  {n:12,x:59.85,y:17.98,k:"pm",time:"4:15",name:"Children's Zoo",star:true,note:"Toddler-height animals to end the day, a short walk from Gate C.",tip:"Exhibits close at 5:00. Exit by 4:50.",q:"Children's Zoo Bronx Zoo"}
+  {n:1,x:54.66,y:11.2,k:"gate",time:"9:30",name:"Gate C and parking",tag:"Start and finish",note:"Park in the Southern Boulevard lot ($22) by 9:30 and be at the gate for the 10:00 opening. Back here around 2:25.",tip:"Kaia's nap can carry on in the car.",q:"Bronx Zoo Southern Boulevard Gate"},
+  {n:2,x:68.01,y:18.24,k:"bird",time:"10:00",name:"Birds of Prey",bird:true,note:"Snowy owls, eagles, condors and vultures, just inside the gate.",tip:"About 15 minutes, outdoors.",q:"Birds of Prey Bronx Zoo"},
+  {n:3,x:73.3,y:22.22,k:"bird",time:"10:20",name:"Aquatic Bird House and Sea Bird Aviary",bird:true,note:"Kaia's stop: swimming penguins, tufted puffins, Caribbean flamingos and kookaburras, indoors and out.",tip:"About 25 minutes. Then about 15 minutes' walk west past the gate to the gorillas.",q:"Aquatic Bird House Bronx Zoo"},
+  {n:4,x:30.98,y:17.98,k:"am",time:"11:00",name:"Congo Gorilla Forest",star:true,note:"Gorillas, mandrills and okapi. You pass the Pheasant Aviary on the way.",tip:"Strollers parked outside; carry the kids in. About 35 minutes.",q:"Congo Gorilla Forest Bronx Zoo"},
+  {n:5,x:22.77,y:36.3,k:"am",time:"11:40",name:"Carter Giraffe Building",note:"Giraffes up close, indoors and out.",tip:"About 15 minutes.",q:"Carter Giraffe Building Bronx Zoo"},
+  {n:6,x:25.69,y:40.03,k:"am",time:"11:55",name:"African Plains",note:"Lions, zebras and gazelles along the path south.",tip:"About 15 minutes, then about 10 minutes' walk to lunch.",q:"African Plains Bronx Zoo"},
+  {n:7,x:14.36,y:65.48,k:"lunch",time:"12:20",name:"Picnic lunch at Asia Plaza",note:"Picnic tables and restrooms nearby. Toddler lunch lands at 12:20.",tip:"About 30 minutes.",q:"Asia Plaza Bronx Zoo"},
+  {n:8,x:20.15,y:76.51,k:"am",time:"12:55",name:"Wild Asia Monorail",star:true,note:"A ride over Asian forest and grassland: rhinos, deer and Patty, the zoo's last elephant. No news of her being moved, but she isn't guaranteed to be out.",tip:"Strollers parked at the platform; kids ride on laps. Allow about 30 minutes with the line.",q:"Wild Asia Monorail Bronx Zoo"},
+  {n:9,x:57.93,y:51.91,k:"am",time:"1:50",name:"Tiger Mountain",note:"Nap stroll from Asia Plaza past the Bears (about 20 minutes), then glass viewing right up against the tigers.",tip:"Kaia likely asleep; adults take turns. Then about 20 minutes back to Gate C.",q:"Tiger Mountain Bronx Zoo"}
 ];
 
 const map = document.getElementById('map');
 const list = document.getElementById('list');
 const scroller = document.getElementById('scroller');
 let done = {};
-try { done = JSON.parse(localStorage.getItem('zooDone') || '{}') || {}; } catch (e) { done = {}; }
-function save(){ try { localStorage.setItem('zooDone', JSON.stringify(done)); } catch (e) {} }
+try { done = JSON.parse(localStorage.getItem('zooDone5') || '{}') || {}; } catch (e) { done = {}; }
+function save(){ try { localStorage.setItem('zooDone5', JSON.stringify(done)); } catch (e) {} }
 
 STOPS.forEach(s => {
   const pin = document.createElement('button');
@@ -199,6 +210,7 @@ STOPS.forEach(s => {
   const tags = [];
   if (s.star) tags.push('<span class="tag star">Star Attraction</span>');
   if (s.opt) tags.push('<span class="tag opt">Optional</span>');
+  if (s.bird) tags.push('<span class="tag bird">For Kaia</span>');
   if (s.tag) tags.push('<span class="tag">' + s.tag + '</span>');
   li.innerHTML =
     '<div class="num ' + s.k + '">' + s.n + '</div>' +
